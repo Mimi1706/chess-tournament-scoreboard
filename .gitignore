@@ -1,3 +1,4 @@
 /env
 /*/__pycache__
-players.json
+db_players.json
+database.json
