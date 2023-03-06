@@ -1,9 +1,6 @@
-class View:
-    def __init__(self):
-        pass
-
+class PlayerView:
     def get_player_data(self):
-        first_name = input("Prénom : ")
+        first_name = input("Heure de début : ")
         last_name = input("Nom de famille : ")
         birthdate = input("Date de naissance : ")
         chess_id = input("Identifiant national d'échecs : ")
@@ -11,11 +8,12 @@ class View:
         return first_name, last_name, birthdate, chess_id
     
     def user_choice(self):
-        user_input = input("Souhaitez-vous:\n"
+        user_input = input("\nSouhaitez-vous:\n"
                     "1 - Créer un joueur\n"
                     "2 - Trouver un joueur\n"
                     "3 - Modifier un joueur\n"
-                    "4 - Supprimer un joueur\n")
+                    "4 - Supprimer un joueur\n"
+                    "5 - Retourner en arrière\n")
         
         return user_input
     
@@ -23,4 +21,4 @@ class View:
         return input(message)
     
     def custom_print(self, message):
-        print(message)
+        return print(message)
