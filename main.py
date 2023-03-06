@@ -1,5 +1,4 @@
-from controller.player import Controller
+from controllers.main_menu import MainMenuController
 
-controller = Controller()
-
+controller = MainMenuController()
 controller.display_menu()
