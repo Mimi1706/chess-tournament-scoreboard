@@ -12,16 +12,13 @@ class MainMenuController:
 
             if user_input == "1":
                 TournamentController().display_menu()
-                break
 
-            if user_input == "2":
+            elif user_input == "2":
                 PlayerController().display_menu()
-                break
 
-            if user_input == "3":
-                self.view.custom_print("\nBonne journée !\n")
-                break
+            elif user_input == "3":
+                quit()
 
             else: 
                 self.view.custom_print("Erreur de sélection, veuillez sélectionner une option valide.")
-                self.display_main_menu()
+                self.display_menu()

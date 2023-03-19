@@ -8,57 +8,71 @@ db_players = TinyDB('db_players.json').table("players").all()
 db_tournaments = TinyDB('database.json').table("tournaments")
 
 class RoundController:
-    def __init__(self):
+    def __init__(self, tournament_doc_id):
         self.view = RoundView()
+        self.tournament_doc_id = tournament_doc_id
+        self.tournament = db_tournaments.get(doc_id=self.tournament_doc_id)
 
     def display_menu(self):
         while True:
             user_input = self.view.user_choice()
 
             if user_input == "1":
-                self.create_match()
-                break
+                self.create_round()
 
-            if user_input == "2":
-                break
+            elif user_input == "2":
+                self.resume_round()
 
-            if user_input == "3":
-                break
+            elif user_input == "3":
+                pass
+
+            elif user_input == "4":
+                return
 
             else: 
                 self.view.custom_print("Erreur de sélection, veuillez sélectionner une option valide.")
                 self.display_menu()
 
     def pair_players(self):
-        tournament_players = list(db_tournaments.get(doc_id=1)["players"])
-        tournament_current_round = db_tournaments.get(doc_id=1)["current_round"]
-        all_players_chessIds = [r['chess_id'] for r in tournament_players]
+        tournament_players = list(self.tournament["players"])
+        tournament_current_round = self.tournament["current_round"]
+        all_players_chessIds = [player['chess_id'] for player in tournament_players]
         all_paired_players = []
 
-        if(tournament_current_round == 0):
-            while len(all_players_chessIds) > 0:
-                randomized_pair = random.sample(all_players_chessIds, 2)
-                all_players_chessIds.remove(randomized_pair[0])
-                all_players_chessIds.remove(randomized_pair[1])  
-                all_paired_players.append(randomized_pair)
+        #if(tournament_current_round == 0):
+        while len(all_players_chessIds) > 0:
+            randomized_pair = random.sample(all_players_chessIds, 2)
+            all_players_chessIds.remove(randomized_pair[0])
+            all_players_chessIds.remove(randomized_pair[1])  
+            all_paired_players.append(randomized_pair)
 
         return all_paired_players
 
-    def create_match(self):
+    def create_round(self):
+        current_round = self.tournament["current_round"]
         all_paired_players = self.pair_players()
-        created_match = []
+        created_matches = []
 
         for index, paired_players in enumerate(all_paired_players):
             match = MatchModel(f"Match_{index+1}", paired_players)
-            created_match.append(match.serializer())
+            created_matches.append(match.serializer())
 
-        db_tournaments.update(add("rounds_list",created_match),where("name")=="test")
+        if (self.tournament["current_round"] < self.tournament["rounds"]): 
+            db_tournaments.update({"current_round": current_round + 1}, doc_ids=[self.tournament_doc_id])
+            db_tournaments.update(add("rounds_list", [{f"round_{current_round + 1}":created_matches}]), doc_ids=[self.tournament_doc_id])
+            print("Round créé.")
+
+        else:
+            self.view.custom_print("Vous avez atteint le nombre maximal de rounds pour ce tournoi.")
+
+    def resume_round(self):
+        self.display_menu()
     
     def update_round(self):
         tournaments = db_tournaments.search(where("name")=="test")[0]
-        current_match = self.create_match()
-        previous_matches = list(tournaments.get("rounds_list"))
-        previous_matches.extend(current_match)
+        current_match = self.create_round()
+        all_matches = list(tournaments.get("rounds_list"))
+        all_matches.extend(current_match)
 
-        db_tournaments.update({"current_round":1},where("name")=="test")
-        db_tournaments.update({"rounds_list":previous_matches},where("name")=="test")
+        db_tournaments.update({"current_round":1}, doc_ids=[self.tournament_doc_id])
+        db_tournaments.update({"rounds_list":all_matches}, doc_ids=[self.tournament_doc_id])
