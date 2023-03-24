@@ -41,6 +41,7 @@ class TournamentController:
         if(db_tournaments.get(where("name") == tournament_name) == None):
             self.view.custom_print("Erreur, ce tournoi n'existe pas.")
             return
+        
         else:
             selected_tournament = db_tournaments.get(where("name") == tournament_name)
             tournament_doc_id = selected_tournament.doc_id
