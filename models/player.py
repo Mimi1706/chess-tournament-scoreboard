@@ -1,10 +1,10 @@
 class PlayerModel:
-    def  __init__(self, first_name, last_name, birthdate, chess_id, score):
+    def  __init__(self, first_name, last_name, birthdate, chess_id, score=0):
         self.first_name = first_name
         self.last_name = last_name
         self.birthdate = birthdate
         self.chess_id = chess_id
-        self.score = 0
+        self.score = score
     
     def serializer(self):
         player = {

@@ -1,6 +1,6 @@
 class PlayerView:
     def get_player_data(self):
-        first_name = input("Heure de début : ")
+        first_name = input("Prénom : ")
         last_name = input("Nom de famille : ")
         birthdate = input("Date de naissance : ")
         chess_id = input("Identifiant national d'échecs : ")

@@ -9,16 +9,12 @@ class MainMenuController:
     def display_menu(self):
         while True:
             user_input = self.view.user_choice()
-
             if user_input == "1":
                 TournamentController().display_menu()
-
             elif user_input == "2":
                 PlayerController().display_menu()
-
             elif user_input == "3":
                 quit()
-
             else: 
                 self.view.custom_print("Erreur de sélection, veuillez sélectionner une option valide.")
                 self.display_menu()

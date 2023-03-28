@@ -8,8 +8,9 @@ class RoundView:
         user_input = input("\nSouhaitez-vous:\n"
                     "1 - Créer un round\n"
                     "2 - Continuer un round\n"
-                    "3 - Supprimer un round\n"
-                    "4 - Retourner en arrière\n")
+                    "3 - Modifier un round\n"
+                    "4 - Supprimer un round\n"
+                    "5 - Retourner en arrière\n")
 
         return user_input
     
