@@ -2,7 +2,7 @@ from controllers.match import MatchController
 from views.round import RoundView
 from models.round import RoundModel
 from models.match import MatchModel
-from tinydb import TinyDB, where
+from tinydb import TinyDB
 from tinydb.operations import add
 import random
 
@@ -14,6 +14,8 @@ class RoundController:
         self.view = RoundView()
         self.tournament_doc_id = tournament_doc_id
         self.tournament = db_tournaments.get(doc_id=self.tournament_doc_id)
+        self.rounds_number = self.tournament["rounds"]
+        self.current_round = self.tournament["current_round"]
 
     def display_menu(self):
         while True:
@@ -48,38 +50,41 @@ class RoundController:
         return all_paired_players
 
     def create_round(self):
-        uptodate_tournament = db_tournaments.get(doc_id=self.tournament_doc_id)
-        current_round = uptodate_tournament["current_round"] + 1
+        tournament = db_tournaments.get(doc_id=self.tournament_doc_id) ## needs to be up-to-date
+        current_round = tournament["current_round"] + 1
         all_paired_players = self.pair_players()
         created_matches = []
 
-        uptodate_tournament.update({"current_round": current_round}, doc_ids=[self.tournament_doc_id])
+        tournament.update({"current_round": current_round}, doc_ids=[self.tournament_doc_id])
 
         for index, paired_players in enumerate(all_paired_players):
             match = MatchModel(f"Match {index+1}", paired_players, "En cours")
             created_matches.append(match.serializer())
 
-        if (uptodate_tournament["current_round"] <= uptodate_tournament["rounds"]):
+        if (tournament["current_round"] <= tournament["rounds"]):
             start_time, end_time = self.view.get_round_data()
             round = RoundModel(current_round,start_time,end_time,created_matches)
             db_tournaments.update({"current_round": current_round}, doc_ids=[self.tournament_doc_id])
-            db_tournaments.update(add("rounds_list", [{f"round_{current_round}":round.serializer()}]), doc_ids=[self.tournament_doc_id])
-            print("Round créé.")
+            db_tournaments.update(add("rounds_list", [round.serializer()]), doc_ids=[self.tournament_doc_id])
+            self.view.custom_print("Round créé.")
 
         else:
             self.view.custom_print("Vous avez atteint le nombre maximal de rounds pour ce tournoi.")
 
     def resume_round(self):
-        rounds_number = self.tournament["rounds"]
-        current_round = self.tournament["current_round"]
-        MatchController(rounds_number, current_round, current_round, self.tournament_doc_id).display_menu()
+        MatchController(self.tournament["rounds"], self.tournament["current_round"], self.tournament["current_round"], self.tournament_doc_id).display_menu()
     
     def update_round(self):
-        rounds_number = self.tournament["rounds"]
-        current_round = self.tournament["current_round"]
-        round_number = input(f"Entrez le round à modifier ({current_round} sur {rounds_number})")
-        MatchController(rounds_number, current_round, round_number, self.tournament_doc_id).display_menu()
-        pass
+        round_number = self.view.custom_input(f"Entrez le round à modifier ({self.current_round} sur {self.rounds_number})")
+        MatchController(self.rounds_number, self.current_round, round_number, self.tournament_doc_id).display_menu()
 
     def delete_round(self):
-        pass
+        selected_round = self.view.custom_input(f"Entrez le round à supprimer ({self.current_round} sur {self.rounds_number}) : ")
+        filtered_rounds = []
+
+        for round in self.tournament["rounds_list"]:
+            if round["round_number"] != int(selected_round):
+                filtered_rounds.append(round)
+
+        self.tournament["rounds_list"] = filtered_rounds
+        db_tournaments.update(self.tournament, doc_ids=[self.tournament_doc_id])

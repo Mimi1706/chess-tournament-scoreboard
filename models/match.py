@@ -12,7 +12,9 @@ class MatchModel:
         match = {
             "name": self.name,
             "player1": self.player1,
+            f"{self.player1} score": self.score_player1,
             "player2": self.player2,
+            f"{self.player2} score": self.score_player2,
             "score": f"J1: {self.score[0]} | J2: {self.score[1]}",
             "winner": self.winner
         }

@@ -39,8 +39,7 @@ class TournamentController:
         
         else:
             selected_tournament = db_tournaments.get(where("name") == tournament_name)
-            tournament_doc_id = selected_tournament.doc_id
-            RoundController(tournament_doc_id).display_menu()
+            RoundController(selected_tournament.doc_id).display_menu()
     
     def delete_tournament(self):
         tournament_name = self.view.custom_input("Entrez le nom du tournoi à effacer: ")
