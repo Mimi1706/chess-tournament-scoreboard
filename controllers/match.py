@@ -1,7 +1,7 @@
 from views.match import MatchView
 from tinydb import TinyDB
 
-db_tournaments = TinyDB('database.json').table("tournaments")
+db_tournaments = TinyDB('db_tournaments.json').table("tournaments")
 
 class MatchController:
     def __init__(self, rounds_number, current_round, tournament_doc_id):

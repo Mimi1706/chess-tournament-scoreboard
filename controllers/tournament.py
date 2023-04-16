@@ -4,7 +4,7 @@ from controllers.round import RoundController
 from tinydb import TinyDB, where
 
 db_players = TinyDB('db_players.json').table("players").all()
-db_tournaments = TinyDB('database.json').table("tournaments")
+db_tournaments = TinyDB('db_tournaments.json').table("tournaments")
 
 class TournamentController:
     def __init__(self):
@@ -36,7 +36,6 @@ class TournamentController:
         if(db_tournaments.get(where("name") == tournament_name) == None):
             self.view.custom_print("Erreur, ce tournoi n'existe pas.")
             return
-        
         else:
             selected_tournament = db_tournaments.get(where("name") == tournament_name)
             RoundController(selected_tournament.doc_id).display_menu()

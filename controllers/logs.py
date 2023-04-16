@@ -2,7 +2,7 @@ from views.logs import LogsView
 from models.logs import LogsModel
 from tinydb import TinyDB, where
 
-db_tournaments = TinyDB('database.json').table("tournaments")
+db_tournaments = TinyDB('db_tournaments.json').table("tournaments")
 db_players = TinyDB('db_players.json').table("players")
 
 class LogsController:
