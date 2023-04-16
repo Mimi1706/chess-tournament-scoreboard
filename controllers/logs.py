@@ -13,7 +13,7 @@ class LogsController:
         while True:
             user_input = self.view.user_choice()
             if user_input == "1":
-                self.show_all_players()
+                self.show_players_database()
             elif user_input == "2":
                 self.show_all_tournaments()
             elif user_input == "3":
@@ -28,13 +28,14 @@ class LogsController:
                 self.view.custom_print("Erreur de sélection, veuillez sélectionner une option valide.")
                 self.display_menu()
 
-    def show_players(self, players):
+    def tournament_players(self, players):
+        alphabetically_sorted_players = sorted(list(players), key=lambda p: p['last_name'])
         serialized_players = []
-        for player in players:
+        for player in alphabetically_sorted_players:
             serialized_players.append(LogsModel.serialize_player(player))
         return serialized_players
 
-    def show_rounds_matches(self, tournament):
+    def tournament_rounds_matches(self, tournament):
         serialized_rounds = []
         for round in tournament["rounds_list"]:
             matches = []
@@ -45,14 +46,20 @@ class LogsController:
         return serialized_rounds 
 
     def show_tournament(self, tournament):
-        return self.view.custom_print(LogsModel.serialize_tournament(tournament, self.show_players(tournament["players"]), self.show_rounds_matches(tournament)))      
+        players = self.tournament_players(tournament["players"])
+        rounds_matches = self.tournament_rounds_matches(tournament)
+        return self.view.custom_print_break(LogsModel.serialize_tournament(tournament, players, rounds_matches))      
 
-    def show_all_players(self):
-        return self.view.custom_print_data(self.show_players(db_players))
+    def show_players_database(self):
+        for player in self.tournament_players(db_players):
+            self.view.custom_print(player)
 
     def show_all_tournaments(self):
         for tournament in db_tournaments:
-            self.show_tournament(tournament)
+            tournament_name = tournament["name"]
+            tournament_start_date = tournament["start_date"]
+            tournament_end_date = tournament["end_date"]
+            self.view.custom_print(f"Nom du tournoi : {tournament_name} (du {tournament_start_date} au {tournament_end_date})")      
                 
     def selected_tournament(self):
         tournament_name = self.view.custom_input("Entrez le nom du tournoi à charger: ")
@@ -61,16 +68,24 @@ class LogsController:
             return selected_tournament
         else:
             return self.view.custom_print("Erreur, ce tournoi n'existe pas.")
-
+        
     def show_selected_tournament(self):
         selected_tournament = self.selected_tournament()
-        return self.view.custom_print(self.show_tournament(selected_tournament))
+        if (selected_tournament):
+            return self.view.custom_print(self.show_tournament(selected_tournament))
 
     def show_selected_tournament_players(self):
         selected_tournament = self.selected_tournament()
-        return self.view.custom_print(self.show_players(selected_tournament["players"]))
+        players = self.tournament_players(selected_tournament["players"])
+        for player in players:
+            self.view.custom_print(player)
 
     def show_selected_tournament_matches(self):
         selected_tournament = self.selected_tournament()
-        return self.view.custom_print(self.show_rounds_matches(selected_tournament))
+        rounds_number = selected_tournament["rounds"]
+        for round in selected_tournament["rounds_list"]:
+            round_number = round["round_number"]
+            self.view.custom_print(f"\nRound {round_number} sur {rounds_number}")
+            for match in round["matches"]:
+                self.view.custom_print_break(LogsModel.serialize_match(match))
     

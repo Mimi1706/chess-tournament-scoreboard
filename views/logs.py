@@ -15,7 +15,8 @@ class LogsView:
     
     def custom_print(self, message):
         return print(message)
-    
-    def custom_print_data(self, data):
-        for item in data:
-            print(item)
+
+    def custom_print_break(self, match):
+        print("")
+        for match_info in match:
+            print(f"{match_info} : {match[match_info]}")
