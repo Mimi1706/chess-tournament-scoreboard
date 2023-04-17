@@ -17,6 +17,8 @@ class TournamentController:
                 self.create_tournament()
             elif user_input == "2":
                 self.resume_tournament()
+            elif user_input == "3":
+                self.update_tournament()
             elif user_input == "4":
                 self.delete_tournament()
             elif user_input == "5":
@@ -31,23 +33,30 @@ class TournamentController:
         db_tournaments.insert(tournament.serializer())
         self.view.custom_print("Tournoi créé.")
 
-    def resume_tournament(self):
+    def find_tournament(self):
         tournament_name = self.view.custom_input("Entrez le nom du tournoi à charger: ")
         if(db_tournaments.get(where("name") == tournament_name) == None):
             self.view.custom_print("Erreur, ce tournoi n'existe pas.")
-            return
+            return self.display_menu()
         else:
-            selected_tournament = db_tournaments.get(where("name") == tournament_name)
-            RoundController(selected_tournament.doc_id).display_menu()
-    
+            return db_tournaments.get(where("name") == tournament_name)
+
+    def resume_tournament(self):
+        selected_tournament = self.find_tournament()
+        RoundController(selected_tournament.doc_id).display_menu()
+
+    def update_tournament(self):
+        selected_tournament = self.find_tournament()
+        for input, info in zip(self.view.get_tournament_data(), selected_tournament):
+            if input != "":
+                selected_tournament[info] = input
+        db_tournaments.update(selected_tournament, doc_ids=[selected_tournament.doc_id])
+        self.view.custom_print("Modifications sauvegardées.")
+
     def delete_tournament(self):
-        tournament_name = self.view.custom_input("Entrez le nom du tournoi à effacer: ")
-        if(db_tournaments.get(where("name") == tournament_name) == None):
-            self.view.custom_print("Erreur, ce tournoi n'existe pas.")
-            self.display_menu()
-        else:
-            db_tournaments.remove(where("name") == tournament_name)
-            self.view.custom_print("Tournoi supprimé.")
+        selected_tournament = self.find_tournament()
+        db_tournaments.remove(where("name") == selected_tournament["name"])
+        self.view.custom_print("Tournoi supprimé.")
            
 
 
