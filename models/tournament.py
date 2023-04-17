@@ -1,5 +1,16 @@
 class TournamentModel:
-    def __init__(self, name, location, start_date, end_date, players, notes, rounds, current_round, rounds_list):
+    def __init__(
+        self,
+        name,
+        location,
+        start_date,
+        end_date,
+        players,
+        notes,
+        rounds,
+        current_round,
+        rounds_list,
+    ):
         self.name = name
         self.location = location
         self.start_date = start_date
@@ -24,4 +35,3 @@ class TournamentModel:
         }
 
         return tournament
-    

@@ -5,12 +5,11 @@ class MatchModel:
         self.player2 = paired_players[1]
         self.winner = winner
 
-    def serializer(self):    
+    def serializer(self):
         match = {
             "name": self.name,
-            "players": [self.player1,self.player2],
+            "players": [self.player1, self.player2],
             "score": [{self.player1: 0}, {self.player2: 0}],
-            "winner": self.winner
+            "winner": self.winner,
         }
         return match
-        

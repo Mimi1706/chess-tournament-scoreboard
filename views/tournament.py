@@ -7,23 +7,24 @@ class TournamentView:
         rounds = input("Nombre de rounds (Par défaut à 4) : ")
         notes = input("Notes à ajouter : ")
 
-        if (rounds == ""):
+        if rounds == "":
             rounds = 4
 
         return name, location, start_date, end_date, int(rounds), notes
 
     def user_choice(self):
-        user_input = input("\nSouhaitez-vous:\n"
-                    "1 - Créer un nouveau tournoi\n"
-                    "2 - Continuer un tournoi\n"
-                    "3 - Modifier un tournoi\n"
-                    "4 - Supprimer un tournoi\n"
-                    "5 - Retourner en arrière\n")
-
+        user_input = input(
+            "\nSouhaitez-vous:\n"
+            "1 - Créer un nouveau tournoi\n"
+            "2 - Continuer un tournoi\n"
+            "3 - Modifier un tournoi\n"
+            "4 - Supprimer un tournoi\n"
+            "5 - Retourner en arrière\n"
+        )
         return user_input
-    
+
     def custom_input(self, message):
         return input(message)
-    
+
     def custom_print(self, message):
         return print(message)

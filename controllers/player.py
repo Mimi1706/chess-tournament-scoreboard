@@ -3,7 +3,8 @@ from views.player import PlayerView
 from tinydb import TinyDB, where
 from models.logs import LogsModel
 
-db_players = TinyDB('db_players.json').table("players")
+db_players = TinyDB("db_players.json").table("players")
+
 
 class PlayerController:
     def __init__(self):
@@ -22,8 +23,10 @@ class PlayerController:
                 self.delete_player()
             elif user_input == "5":
                 return
-            else: 
-                self.view.custom_print("Erreur de sélection, veuillez sélectionner une option valide.")
+            else:
+                self.view.custom_print(
+                    "Erreur de sélection, veuillez sélectionner une option valide."
+                )
                 self.display_menu()
 
     def create_player(self):
@@ -33,16 +36,21 @@ class PlayerController:
         self.view.custom_print("Joueur créé.")
 
     def load_player(self):
-        chess_id_input = self.view.custom_input("Quel est l'identifiant national d'échecs du joueur ? ")
+        chess_id_input = self.view.custom_input(
+            "Quel est l'identifiant national d'échecs du joueur ? "
+        )
         player = db_players.search(where("chess_id") == chess_id_input)
         if player == []:
             self.view.custom_print("Joueur non existant.")
+            return None
         else:
             self.view.custom_print(LogsModel.serialize_player(player[0]))
             return player[0]
 
     def update_player(self):
-        chess_id_input = self.view.custom_input("Quel l'identifiant national d'échecs du joueur ? ")
+        chess_id_input = self.view.custom_input(
+            "Quel l'identifiant national d'échecs du joueur ? "
+        )
         player = db_players.search(where("chess_id") == chess_id_input)
         if player == []:
             return self.view.custom_print("Joueur non existant.")
@@ -50,15 +58,23 @@ class PlayerController:
             first_name = input("Prénom : ")
             last_name = input("Nom de famille : ")
             birthdate = input("Date de naissance : ")
-            db_players.update({"first_name":first_name, "last_name": last_name, "birthdate": birthdate}, where("chess_id") == chess_id_input)
+            db_players.update(
+                {
+                    "first_name": first_name,
+                    "last_name": last_name,
+                    "birthdate": birthdate,
+                },
+                where("chess_id") == chess_id_input,
+            )
             self.view.custom_print("Joueur modifié.")
 
     def delete_player(self):
-        chess_id_input = self.view.custom_input("Quel l'identifiant national d'échecs du joueur ? ")
+        chess_id_input = self.view.custom_input(
+            "Quel l'identifiant national d'échecs du joueur ? "
+        )
         player = db_players.search(where("chess_id") == chess_id_input)
         if player == []:
             self.view.custom_print("Joueur non existant.")
         else:
             db_players.remove(where("chess_id") == chess_id_input)
             self.view.custom_print("Joueur supprimé.")
-

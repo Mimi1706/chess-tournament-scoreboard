@@ -5,25 +5,29 @@ class PlayerView:
         birthdate = input("Date de naissance : ")
         chess_id = input("Identifiant national d'échecs : ")
         return first_name, last_name, birthdate, chess_id
-    
+
     def create_player(self):
-        user_input = input("\nSouhaitez-vous:\n"
-                    "1 - Créer un joueur\n"
-                    "2 - Trouver un joueur\n"
-                    "3 - Modifier un joueur\n"
-                    "4 - Supprimer un joueur\n"
-                    "5 - Retourner en arrière\n")
+        user_input = input(
+            "\nSouhaitez-vous:\n"
+            "1 - Créer un joueur\n"
+            "2 - Trouver un joueur\n"
+            "3 - Modifier un joueur\n"
+            "4 - Supprimer un joueur\n"
+            "5 - Retourner en arrière\n"
+        )
         return user_input
-    
+
     def add_player(self):
-        user_input = input("\nSouhaitez-vous:\n"
-                    "1 - Ajouter un joueur\n"
-                    "2 - Enlever un joueur\n"
-                    "3 - Terminer\n")
+        user_input = input(
+            "\nSouhaitez-vous:\n"
+            "1 - Ajouter un joueur\n"
+            "2 - Enlever un joueur\n"
+            "3 - Terminer\n"
+        )
         return user_input
-    
+
     def custom_input(self, message):
         return input(message)
-    
+
     def custom_print(self, message):
         return print(message)

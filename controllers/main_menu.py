@@ -3,6 +3,7 @@ from controllers.tournament import TournamentController
 from controllers.player import PlayerController
 from controllers.logs import LogsController
 
+
 class MainMenuController:
     def __init__(self):
         self.view = MainMenuView()
@@ -18,6 +19,8 @@ class MainMenuController:
                 LogsController().display_menu()
             elif user_input == "4":
                 quit()
-            else: 
-                self.view.custom_print("Erreur de sélection, veuillez sélectionner une option valide.")
+            else:
+                self.view.custom_print(
+                    "Erreur de sélection, veuillez sélectionner une option valide."
+                )
                 self.display_menu()
