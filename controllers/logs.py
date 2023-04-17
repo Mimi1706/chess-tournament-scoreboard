@@ -31,9 +31,9 @@ class LogsController:
                 )
                 self.display_menu()
 
-    def tournament_players(self, players):
+    def tournament_players(self, players, criteria, order):
         alphabetically_sorted_players = sorted(
-            list(players), key=lambda player: player["last_name"]
+            list(players), key=lambda player: player[criteria], reverse=order
         )
         serialized_players = []
         for player in alphabetically_sorted_players:
@@ -51,14 +51,14 @@ class LogsController:
         return serialized_rounds
 
     def show_tournament(self, tournament):
-        players = self.tournament_players(tournament["players"])
+        players = self.tournament_players(tournament["players"], "score", False)
         rounds_matches = self.tournament_rounds_matches(tournament)
         return self.view.custom_print_break(
             LogsModel.serialize_tournament(tournament, players, rounds_matches)
         )
 
     def show_players_database(self):
-        for player in self.tournament_players(db_players):
+        for player in self.tournament_players(db_players, "last_name", False):
             self.view.custom_print(player)
 
     def show_all_tournaments(self):
@@ -85,7 +85,7 @@ class LogsController:
 
     def show_selected_tournament_players(self):
         selected_tournament = self.selected_tournament()
-        players = self.tournament_players(selected_tournament["players"])
+        players = self.tournament_players(selected_tournament["players"], "score", True)
         for player in players:
             self.view.custom_print(player)
 

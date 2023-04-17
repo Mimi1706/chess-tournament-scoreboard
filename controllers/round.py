@@ -25,7 +25,7 @@ class RoundController:
             elif user_input == "2":
                 self.resume_round()
             elif user_input == "3":
-                self.update_round()
+                return
             else:
                 self.view.custom_print(
                     "Erreur de sélection, veuillez sélectionner une option valide."

@@ -4,7 +4,7 @@ class RoundView:
             "\nSouhaitez-vous:\n"
             "1 - Créer un nouveau round\n"
             "2 - Entrer les scores du round en cours\n"
-            "5 - Retourner en arrière\n"
+            "3 - Retourner en arrière\n"
         )
         return user_input
 
