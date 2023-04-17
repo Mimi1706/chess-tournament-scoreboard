@@ -16,7 +16,7 @@ class TournamentView:
         user_input = input("\nSouhaitez-vous:\n"
                     "1 - Créer un nouveau tournoi\n"
                     "2 - Continuer un tournoi\n"
-                    "3 - Consulter un ancien tournoi\n"
+                    "3 - Modifier un tournoi\n"
                     "4 - Supprimer un tournoi\n"
                     "5 - Retourner en arrière\n")
 
