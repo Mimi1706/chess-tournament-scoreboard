@@ -29,7 +29,7 @@ class LogsController:
                 self.display_menu()
 
     def tournament_players(self, players):
-        alphabetically_sorted_players = sorted(list(players), key=lambda p: p['last_name'])
+        alphabetically_sorted_players = sorted(list(players), key=lambda player: player['last_name'])
         serialized_players = []
         for player in alphabetically_sorted_players:
             serialized_players.append(LogsModel.serialize_player(player))

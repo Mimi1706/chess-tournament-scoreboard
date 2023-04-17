@@ -2,7 +2,7 @@ class MainMenuView:
     def user_choice(self):
         user_input = input("\nBonjour, souhaitez-vous:\n"
                     "1 - Gérer les tournois\n"
-                    "2 - Gérer les joueurs\n" 
+                    "2 - Gérer la base de données de joueurs\n" 
                     "3 - Consulter les rapports\n"
                     "4 - Quitter\n")
         

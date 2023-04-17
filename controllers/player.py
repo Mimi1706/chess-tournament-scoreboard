@@ -1,6 +1,7 @@
 from models.player import PlayerModel
 from views.player import PlayerView
 from tinydb import TinyDB, where
+from models.logs import LogsModel
 
 db_players = TinyDB('db_players.json').table("players")
 
@@ -10,7 +11,7 @@ class PlayerController:
 
     def display_menu(self):
         while True:
-            user_input = self.view.user_choice()
+            user_input = self.view.create_player()
             if user_input == "1":
                 self.create_player()
             elif user_input == "2":
@@ -32,22 +33,19 @@ class PlayerController:
         self.view.custom_print("Joueur créé.")
 
     def load_player(self):
-        chess_id_input = self.view.custom_input("Quel l'identifiant national d'échecs du joueur ? ")
+        chess_id_input = self.view.custom_input("Quel est l'identifiant national d'échecs du joueur ? ")
         player = db_players.search(where("chess_id") == chess_id_input)
-
         if player == []:
-            return self.view.custom_print("Joueur non existant.")
-        
+            self.view.custom_print("Joueur non existant.")
         else:
-            self.view.custom_print(player)
+            self.view.custom_print(LogsModel.serialize_player(player[0]))
+            return player[0]
 
     def update_player(self):
         chess_id_input = self.view.custom_input("Quel l'identifiant national d'échecs du joueur ? ")
         player = db_players.search(where("chess_id") == chess_id_input)
-
         if player == []:
             return self.view.custom_print("Joueur non existant.")
-        
         else:
             first_name = input("Prénom : ")
             last_name = input("Nom de famille : ")
@@ -58,10 +56,8 @@ class PlayerController:
     def delete_player(self):
         chess_id_input = self.view.custom_input("Quel l'identifiant national d'échecs du joueur ? ")
         player = db_players.search(where("chess_id") == chess_id_input)
-
         if player == []:
             self.view.custom_print("Joueur non existant.")
-        
         else:
             db_players.remove(where("chess_id") == chess_id_input)
             self.view.custom_print("Joueur supprimé.")
