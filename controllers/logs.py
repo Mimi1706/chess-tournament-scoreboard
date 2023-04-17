@@ -67,12 +67,12 @@ class LogsController:
         if (selected_tournament):
             return selected_tournament
         else:
-            return self.view.custom_print("Erreur, ce tournoi n'existe pas.")
+            self.view.custom_print("Erreur, ce tournoi n'existe pas.")
+            return self.display_menu()
         
     def show_selected_tournament(self):
         selected_tournament = self.selected_tournament()
-        if (selected_tournament):
-            return self.view.custom_print(self.show_tournament(selected_tournament))
+        self.view.custom_print(self.show_tournament(selected_tournament))
 
     def show_selected_tournament_players(self):
         selected_tournament = self.selected_tournament()
