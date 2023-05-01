@@ -1,10 +1,8 @@
 [![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com)
 
-## [OpenClassrooms] - Projet 4 : Développer un programme logiciel en Python
+# [OpenClassrooms] - Projet 4 : Développer un programme logiciel en Python
 
-As part of the Openclassrooms [Python software developer program](https://openclassrooms.com/fr/paths/518-developpeur-dapplication-python)
-
-### Chess Club
+As part of the Openclassrooms [Python software developer program](https://openclassrooms.com/fr/paths/518-developpeur-dapplication-python), this project focuses on the use of the Model-View-Controller design pattern.
 
 ## Prerequisites for installation
 
@@ -31,28 +29,28 @@ To generate a flake8 report in HTML format, write `flake8 --format=html --htmldi
 
 ## Using the program
 
-# To create players
+### To create players
 
 - Select option 2 "Gérer la base de données de joueurs"
 - Create a player with option 1 "Créer un joueur"
 - The created player will be saved in the database "db_players.json"
 
-# To create a tournament
+### To create a tournament
 
 - Select option 1 "Gérer les tournois"
 - Create a tournament with option 1 "Créer un nouveau tournoi"
 
-# To create a round
+### To create a round
 
 - After creating a tournament, select ("Gérer les tournois" ->) "Continuer un tournoi"
 - Load your tournament
 - Create a new round with option 1 ("Gérer les tournois" ->) "Créer un nouveau round"
 
-# To score a match
+### To score a match
 
 - After creating a round, the players will be paired together in matches
 - Select ("Gérer les tournois" -> "Continuer un tournoi" ->) "Entrer les scores du round en cours" and score the matches
 
-# To consult reports
+### To consult reports
 
 - You can consult tournament reports and the player database from the main menu with option 3 "Consulter les rapports"
