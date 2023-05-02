@@ -93,6 +93,10 @@ class RoundController:
 
     def resume_round(self):
         tournament = db_tournaments.get(doc_id=self.tournament_doc_id)
+        if tournament["current_round"] == 0:
+            self.view.custom_print("Veuillez d'abord créer un round.")
+            return self.display_menu()
+
         last_round_index = tournament["current_round"] - 1
         last_round = tournament["rounds_list"][last_round_index]
         if last_round["end_time"] == "En cours":
