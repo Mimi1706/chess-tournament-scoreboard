@@ -46,7 +46,7 @@ class TournamentController:
 
         while True:
             if db_tournaments.get(where("name") == name):
-                self.view.custom_print("Erreur. Ce nom de tournoi existe déjà.")
+                self.view.custom_print("\nErreur. Ce nom de tournoi existe déjà.")
                 name = self.view.custom_input("Nom du tournoi : ")
             else:
                 break
@@ -108,9 +108,9 @@ class TournamentController:
             if input != "":
                 selected_tournament[info] = input
         db_tournaments.update(selected_tournament, doc_ids=[selected_tournament.doc_id])
-        self.view.custom_print("Modifications sauvegardées.")
+        return self.view.custom_print("Modifications sauvegardées.")
 
     def delete_tournament(self):
         selected_tournament = self.find_tournament()
         db_tournaments.remove(where("name") == selected_tournament["name"])
-        self.view.custom_print("Tournoi supprimé.")
+        return self.view.custom_print("Tournoi supprimé.")
