@@ -1,4 +1,5 @@
 /env
 /*/__pycache__
+/.vscode
 db_players.json
 db_tournaments.json
